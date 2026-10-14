@@ -241,3 +241,78 @@ footer {
   .search-control { grid-column: auto; }
   th, td { padding: 11px 13px; }
 }
+
+/* Plot modal */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.75);
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+
+  max-width: 95vw;
+  max-height: 95vh;
+
+  background: white;
+  border-radius: 10px;
+
+  padding: 16px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+.modal-content img {
+  display: block;
+
+  max-width: 90vw;
+  max-height: 85vh;
+
+  width: auto;
+  height: auto;
+}
+
+.modal-close {
+  position: absolute;
+
+  top: 8px;
+  right: 8px;
+
+  width: 36px;
+  height: 36px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.9);
+
+  color: #222;
+
+  font-size: 28px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  z-index: 1;
+}
+
+.modal-close:hover {
+  background: white;
+}

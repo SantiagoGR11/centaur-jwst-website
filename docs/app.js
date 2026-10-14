@@ -13,7 +13,10 @@ const elements = {
   body: document.getElementById("results-body"),
   visibleCount: document.getElementById("visible-count"),
   emptyState: document.getElementById("empty-state"),
-  errorState: document.getElementById("error-state")
+  errorState: document.getElementById("error-state"),
+  modal: document.getElementById("plot-modal"),
+  modalImage: document.getElementById("modal-image"),
+  modalClose: document.getElementById("modal-close")
 };
 
 function normalise(value) {
@@ -109,11 +112,22 @@ function renderTable() {
     if (normalise(row.plot)) {
       const link = document.createElement("a");
 
-      link.href = `plots/${encodeURIComponent(normalise(row.plot))}`;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
+      const plotPath = `plots/${encodeURIComponent(normalise(row.plot))}`;
+
+      link.href = plotPath;
       link.className = "plot-link";
       link.textContent = "View";
+
+      link.addEventListener("click", event => {
+      event.preventDefault();
+
+      elements.modalImage.src = plotPath;
+      elements.modalImage.alt =
+          `Resonance plot for ${normalise(row.object)}`;
+
+      elements.modal.classList.add("open");
+      elements.modal.setAttribute("aria-hidden", "false");
+      });
 
       link.setAttribute(
         "aria-label",
@@ -143,6 +157,13 @@ function resetFilters() {
   applyFilters();
 }
 
+function closeModal() {
+  elements.modal.classList.remove("open");
+  elements.modal.setAttribute("aria-hidden", "true");
+
+  elements.modalImage.src = "";
+}
+
 function bindControls() {
   elements.search.addEventListener("input", applyFilters);
   elements.classFilter.addEventListener("change", applyFilters);
@@ -150,6 +171,17 @@ function bindControls() {
   elements.resonanceFilter.addEventListener("change", applyFilters);
   elements.resultFilter.addEventListener("change", applyFilters);
   elements.reset.addEventListener("click", resetFilters);
+  elements.modalClose.addEventListener("click", closeModal);
+  elements.modal.addEventListener("click", event => {
+    if (event.target === elements.modal) {
+      closeModal();
+    }
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeModal();
+    }
+  });
 }
 
 async function loadResults() {
